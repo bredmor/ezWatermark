@@ -1,9 +1,10 @@
-let lastPosX = 20;
-let lastPosY = 20;
+let lastPosX = 50;
+let lastPosY = 50;
 let lastText = "@ezWatermark"
 let textSize = 70;
 let opacity = 70;
 let img;
+let shrink = false;
 
 // Handle Image Upload
 let uploader = document.getElementById('uploader');
@@ -32,9 +33,35 @@ let downloadButton = document.getElementById('downloadButton');
 downloadButton.addEventListener('click', saveImage, false);
 downloadButton.addEventListener('toouchend', saveImage, false);
 
+// Handle shrink option for image
+let shrinkControl = document.getElementById('shrink');
+shrinkControl.addEventListener('change', function(e) {
+	shrink = (shrinkControl.checked === true)
+	drawCycle();
+});
+
+function doScaling() {
+	let container = document.getElementById('container');
+	let drawableRectArea = {
+		width: container.offsetWidth,
+		height: container.offsetHeight
+	}
+	let scale = Math.min((drawableRectArea.width/img.width), (drawableRectArea.height/img.height));
+
+	let size = {
+		width: (img.width * scale),
+		height: (img.height * scale)
+	}
+
+	canvas.height = size.height;
+	canvas.width = size.width;
+
+	ctx.drawImage(img, 0, 0, size.width, size.height);
+}
+
 function handleOpacity(e) {
 	opacity = parseInt(e.target.value)
-	placeText();
+	drawCycle();
 }
 
 function saveImage() {
@@ -50,7 +77,7 @@ function saveImage() {
 
 function handleFontSize(e) {
 	textSize = parseInt(e.target.value);
-	placeText();
+	drawCycle();
 }
 
 function handleMouseUp(e) {
@@ -63,12 +90,19 @@ function handleMouseUp(e) {
 	lastPosX = pos.x;
 	lastPosY = pos.y;
 
-	placeText();
+	drawCycle();
 }
 
-function placeText() {
+function drawCycle() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.drawImage(img,0,0);
+	if(shrink) {
+		doScaling();
+	} else {
+		canvas.height = img.height;
+		canvas.width = img.width;
+		ctx.drawImage(img, 0, 0);
+	}
+
 	ctx.font = `${textSize}px Arial`;
 
 	// set opacity level for text
@@ -81,7 +115,7 @@ function placeText() {
 
 function handleText(e) {
 	lastText = e.target.value;
-	placeText();
+	drawCycle();
 }
 
 function handleImage(e) {
@@ -91,7 +125,7 @@ function handleImage(e) {
         img.onload = function(){
             canvas.width = img.width;
             canvas.height = img.height;
-            ctx.drawImage(img,0,0);
+            drawCycle();
         }
         img.src = event.target.result;
     }
