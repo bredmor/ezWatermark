@@ -29,7 +29,8 @@ canvas.addEventListener('mouseup', handleMouseUp, false);
 
 // Handle download button
 let downloadButton = document.getElementById('downloadButton');
-downloadButton.addEventListener('click', saveImage);
+downloadButton.addEventListener('click', saveImage, false);
+downloadButton.addEventListener('toouchend', saveImage, false);
 
 function handleOpacity(e) {
 	opacity = parseInt(e.target.value)
