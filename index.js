@@ -31,7 +31,7 @@ canvas.addEventListener('mouseup', handleMouseUp, false);
 // Handle download button
 let downloadButton = document.getElementById('downloadButton');
 downloadButton.addEventListener('click', saveImage, false);
-downloadButton.addEventListener('toouchend', saveImage, false);
+downloadButton.addEventListener('touchend', saveImage, false);
 
 // Handle shrink option for image
 let shrinkControl = document.getElementById('shrink');
