@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+	<title>ezWatermark</title>
+	<style type="text/css">
+		body {
+			font-family: Helvetica, Arial, sans-serif;
+			color: #232323;
+			background-color: #f8f8f8;
+		}
+
+		li {
+			padding-bottom: 0.2em;
+		}
+
+		#container {
+		  position: relative;
+		  text-align: center;
+		  color: white;
+		  width: 90%;
+		  margin-left:5%;
+		}
+
+		.byline {
+			font-size: 0.4em;
+		}
+	</style>
+</head>
+<body>
+	<h1>ezWatermark <span class="byline">by <a target="_blank" href="https://github.com/bredmor">@bredmor</a></span></h1>
+	<h2>How to use:</h2>
+	<ol>
+		<li>Select your image: <input type="file" id="uploader" name="uploader"/></li>
+		<li>Enter your watermark text: <input type="text" id="caption" name="caption" placeholder="@ezWatermark" /></li>
+		<li>Select a text opacity: <input type="number" id="opacity" name="opacity" value="70" step="10"></li>
+		<li>Select a text size: <input type="number" id="fontSize" name="fontSize" value="70" step="10"></li>
+		<li>Position your watermark by clicking on/tapping the preview where you'd like it to appear.</li>
+		<li>Download your watermarked image: <button id="downloadButton" type="button">Download</button></li>
+	</ol>
+ 	<div id="container">
+  	<canvas id="canvas"></canvas>
+	</div>
+<script src="index.js"></script>
+</body>
+</html>
