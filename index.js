@@ -1,3 +1,4 @@
+let storage = window.localStorage;
 let lastPosX = 50;
 let lastPosY = 50;
 let lastText = "@ezWatermark"
@@ -14,8 +15,8 @@ let ctx = canvas.getContext('2d');
 
 // Handle watermark text change
 ctx.font = "70px Arial";
-let caption = document.getElementById('caption');
-caption.addEventListener('input', handleText);
+let textControl = document.getElementById('caption');
+textControl.addEventListener('input', handleText);
 
 // Handle font size change
 let fontSizeControl = document.getElementById('fontSize');
@@ -39,6 +40,47 @@ shrinkControl.addEventListener('change', function(e) {
 	shrink = (shrinkControl.checked === true)
 	drawCycle();
 });
+
+loadSettings();
+
+/**
+ * Functions
+ */
+
+function saveSettings() {
+	storage.setItem('lastPosX', lastPosX);
+	storage.setItem('lastPosY', lastPosY);
+	storage.setItem('lastText', lastText);
+	storage.setItem('textSize', textSize);
+	storage.setItem('opacity', opacity);
+	storage.setItem('shrink', shrink);
+}
+
+function loadSettings() {
+	lastPosX = getItemDefault('lastPosX', lastPosX)
+	lastPosY = getItemDefault('lastPosY', lastPosY)
+
+	lastText = getItemDefault('lastText', lastText)
+	textControl.value = lastText;
+
+	textSize = getItemDefault('textSize', textSize)
+	fontSizeControl.value = parseInt(textSize);
+
+	opacity = getItemDefault('opacity', opacity)
+	opacityControl.value = parseInt(opacity);
+
+	shrink = getItemDefault('shrink', shrink)
+	shrinkControl.checked = shrink;
+}
+
+function getItemDefault(key, fallback) {
+	let value = storage.getItem(key);
+	if(!value) {
+		return fallback;
+	}
+
+	return value;
+}
 
 function doScaling() {
 	let container = document.getElementById('container');
@@ -111,6 +153,8 @@ function drawCycle() {
 
 	// reset opacity so the image doesn't get drawn semi-transparent next call
 	ctx.globalAlpha = 1;
+
+	saveSettings();
 }
 
 function handleText(e) {
